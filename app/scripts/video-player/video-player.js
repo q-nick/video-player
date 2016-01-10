@@ -18,21 +18,22 @@
             that.element = document.querySelector(selector);
 
             //test if player is not already initialized on this node
-            if (that.element.className.indexOf('video-player-initialized') !== -1) {
+            if (that.element.className.indexOf('video-player') !== -1) {
                 that.element = null;
                 return;
             } else {
-                that.element.className = that.element.className + ' video-player-initialized'
+                that.element.className = that.element.className + ' video-player'
             }
 
             draw();
 
-            that.screen = new VideoPlayerController.Screen(that.element.querySelector('.video-player-screen'));
-            that.playlist = new VideoPlayerController.Playlist(that.element.querySelector('.video-player-playlist'));
+            that.screen = new VideoPlayerController.Screen(that.element.querySelectorAll('div')[0]);
+            that.playlist = new VideoPlayerController.Playlist(that.element.querySelector('div')[1]);
         }
 
         function draw() {
-            that.element.innerHTML = '<div class="video-player-screen"></div><div class="video-player-playlist"></div>';
+             //TODO test not draw if exists
+            that.element.innerHTML = '<div></div><div></div>';
         }
 
         function destroy() {

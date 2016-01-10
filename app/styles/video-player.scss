@@ -1,0 +1,29 @@
+.video-player {
+    background-color: gray;
+    padding-right: 200px;
+    height: 300px;
+    position: relative;
+    &-screen {
+        background-color: black;
+        height: 100%;
+        video {
+            width: 100%;
+        }
+    }
+    &-playlist {
+        background-color: green;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 200px;
+        min-height: 100px;
+    }
+    @media(max-width:768px) {
+        padding: 0;
+        &-playlist {
+            position: relative;
+            width: 100%;
+        }
+    }
+}

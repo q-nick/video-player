@@ -31,8 +31,7 @@
             });
 
             it('should add dom nodes for playlist and screen', function() {
-                expect(player.element.innerHTML).toContain('video-player-playlist');
-                expect(player.element.innerHTML).toContain('video-player-screen');
+                expect(player.element.children.length).toBe(2);
             });
 
             it('should destroy everything', function() {
