@@ -1,0 +1,16 @@
+{
+    "name": "My playlist",
+    "videos": [{
+        "url": "video01.mp4",
+        "name": "movie one"
+    }, {
+        "url": "video02.mp4",
+        "name": "movie one"
+    }, {
+        "url": "video03.mp4",
+        "name": "movie one"
+    }, {
+        "url": "video04.mp4",
+        "name": "movie one"
+    }]
+}

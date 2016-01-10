@@ -1,3 +1,3 @@
 (function() {
-    console.log('Hello World!');
+    var player = new VideoPlayer();
 })();

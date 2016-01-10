@@ -3,10 +3,6 @@
 'use strict';
 
 // # Globbing
-// for performance reasons we're only matching one level down:
-// 'test/spec/{,*/}*.js'
-// If you want to recursively match all subfolders, use:
-// 'test/spec/**/*.js'
 
 module.exports = function(grunt) {
 
@@ -35,14 +31,6 @@ module.exports = function(grunt) {
             bower: {
                 files: ['bower.json'],
                 tasks: ['wiredep']
-            },
-            babel: {
-                files: ['<%= config.app %>/scripts/{,*/}*.js'],
-                tasks: ['babel:dist']
-            },
-            babelTest: {
-                files: ['test/spec/{,*/}*.js'],
-                tasks: ['babel:test', 'test:watch']
             },
             gruntfile: {
                 files: ['Gruntfile.js']
@@ -129,38 +117,17 @@ module.exports = function(grunt) {
             ]
         },
 
-        // Mocha testing framework configuration options
-        mocha: {
-            all: {
+        //karma
+        karma: {
+            unit: {
                 options: {
-                    run: true,
-                    urls: ['http://<%= browserSync.test.options.host %>:<%= browserSync.test.options.port %>/index.html']
-                }
-            }
-        },
-
-        // Compiles ES6 with Babel
-        babel: {
-            options: {
-                sourceMap: true
-            },
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= config.app %>/scripts',
-                    src: '{,*/}*.js',
-                    dest: '.tmp/scripts',
-                    ext: '.js'
-                }]
-            },
-            test: {
-                files: [{
-                    expand: true,
-                    cwd: 'test/spec',
-                    src: '{,*/}*.js',
-                    dest: '.tmp/spec',
-                    ext: '.js'
-                }]
+                    files: ['<%= config.app %>/scripts/video-player/**/*.js'],
+                    frameworks: ['jasmine']
+                },
+                port: 9999,
+                singleRun: true,
+                browsers: ['PhantomJS'],
+                logLevel: 'ERROR'
             }
         },
 
@@ -298,32 +265,6 @@ module.exports = function(grunt) {
             }
         },
 
-        // By default, your `index.html`'s <!-- Usemin block --> will take care
-        // of minification. These next options are pre-configured if you do not
-        // wish to use the Usemin blocks.
-        // cssmin: {
-        //   dist: {
-        //     files: {
-        //       '<%= config.dist %>/styles/main.css': [
-        //         '.tmp/styles/{,*/}*.css',
-        //         '<%= config.app %>/styles/{,*/}*.css'
-        //       ]
-        //     }
-        //   }
-        // },
-        // uglify: {
-        //   dist: {
-        //     files: {
-        //       '<%= config.dist %>/scripts/scripts.js': [
-        //         '<%= config.dist %>/scripts/scripts.js'
-        //       ]
-        //     }
-        //   }
-        // },
-        // concat: {
-        //   dist: {}
-        // },
-
         // Copies remaining files to places other tasks can use
         copy: {
             dist: {
@@ -368,14 +309,10 @@ module.exports = function(grunt) {
         // Run some tasks in parallel to speed up build process
         concurrent: {
             server: [
-                'babel:dist',
                 'sass'
             ],
-            test: [
-                'babel'
-            ],
+            test: [],
             dist: [
-                'babel',
                 'sass',
                 'imagemin',
                 'svgmin'
@@ -416,7 +353,7 @@ module.exports = function(grunt) {
 
         grunt.task.run([
             'browserSync:test',
-            'mocha'
+            'karma'
         ]);
     });
 
