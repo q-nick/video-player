@@ -1,15 +1,30 @@
 .vplayer {
     &-playlist {
-        background-color: green;
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
         width: 200px;
         min-height: 100px;
+        overflow-y: scroll;
+        background-color: black;
         @media(max-width:768px) {
             position: relative;
             width: 100%;
+        }
+        &-list {
+            list-style-position: inside;
+            padding: 5px;
+            &__item {
+                border-bottom: 1px solid white;
+                padding: 10px;
+                cursor: pointer;
+                color: white;
+                &:hover,
+                &--active {
+                    background-color: gray;
+                }
+            }
         }
     }
 }

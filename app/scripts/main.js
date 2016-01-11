@@ -3,7 +3,7 @@
     var player = new VideoPlayer('.my-player');
 
     player.screen.setVideo([{
-        src: 'video/mov_bbb.mp4',
+        src: 'video/Rain.mp4',
         type: 'video/mp4'
     }, {
         src: 'video/mov_bbb.ogg',

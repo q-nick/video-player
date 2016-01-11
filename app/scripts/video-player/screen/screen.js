@@ -29,7 +29,7 @@
 
             draw();
             videoElement = element.querySelector('video');
-            videoControls = new VideoPlayerController.VideoControls(element.querySelectorAll('div'));
+            videoControls = new VideoPlayerController.VideoControls(element.querySelector('div'));
 
             bind();
         }

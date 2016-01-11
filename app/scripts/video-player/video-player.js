@@ -26,13 +26,13 @@
             }
 
             draw();
-
-            that.screen = new VideoPlayerController.Screen(that.element.querySelectorAll('div')[0]);
-            that.playlist = new VideoPlayerController.Playlist(that.element.querySelector('div')[1]);
+            var divs = that.element.querySelectorAll('div');
+            that.screen = new VideoPlayerController.Screen(divs[0]);
+            that.playlist = new VideoPlayerController.Playlist(divs[1]);
         }
 
         function draw() {
-             //TODO test not draw if exists
+            //TODO test not draw if exists
             that.element.innerHTML = '<div></div><div></div>';
         }
 
