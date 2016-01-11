@@ -20,11 +20,13 @@
             spyOn(videoTag, 'load');
             videoTag.play = function() {};
             spyOn(videoTag, 'play');
+            videoTag.pause = function() {};
+            spyOn(videoTag, 'pause');
         });
 
         afterEach(function() {
-            document.body.innerHTML = '';
             screen.destroy();
+            document.body.innerHTML = '';
         });
 
         describe('constructor/destructor', function() {
@@ -34,16 +36,19 @@
 
             it('should not create new instance of screen if it exists on given node', function() {
                 var secondScreen = new VideoPlayerController.Screen(document.querySelector('div'));
-                expect(secondScreen.element).toEqual(null);
+                expect(screenElement.innerHTML).not.toEqual('');
+                secondScreen.destroy(); //we are testing that secondscreen wont destroy screenElement
+                expect(screenElement.innerHTML).not.toEqual('');
             });
 
             it('should add video tag', function() {
-                expect(screen.element.querySelectorAll('video').length).toEqual(1);
+                expect(screenElement.querySelectorAll('video').length).toEqual(1);
             });
 
             it('should destroy everything', function() {
                 screen.destroy();
-                expect(screen.element).toEqual(null);
+                expect(screenElement.innerHTML).toEqual('');
+                expect(screenElement.className).toEqual('');
             });
         });
 
@@ -69,8 +74,8 @@
             });
 
             it('should Pause video', function() {
-                //expect(VideoPlayerController.Playlist).toHaveBeenCalled();
-                //expect(player.playlist).toBeDefined();
+                screen.pauseVideo();
+                expect(videoTag.pause).toHaveBeenCalled();
             });
         });
     });

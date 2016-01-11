@@ -9,7 +9,6 @@
         this.setVideo = setVideo;
         this.startVideo = startVideo;
         this.pauseVideo = pauseVideo;
-        this.element = element;
 
         //private
         var that = this;
@@ -21,32 +20,28 @@
         ///implementation
         function constructor() {
             //test if player is not already initialized on this node
-            if (that.element.className.indexOf('vplayer-screen') !== -1) {
-                that.element = null;
+            if (element.className.indexOf('vplayer-screen') !== -1) {
+                element = null;
                 return;
             } else {
-                that.element.className = that.element.className + ' vplayer-screen'
+                element.className = element.className + ' vplayer-screen'
             }
 
             draw();
+            videoElement = element.querySelector('video');
+            videoControls = new VideoPlayerController.VideoControls(element.querySelectorAll('div'));
+
             bind();
         }
 
         function draw() {
-            if (!videoElement) { //TODO test not draw if exists
-                videoElement = document.createElement('video');
-                that.element.appendChild(videoElement);
-
-                var videoControlsElement = document.createElement('div');
-                that.element.appendChild(videoControlsElement);
-                that.videoControls = new VideoPlayerController.VideoControls(videoControlsElement);
-            }
+            element.innerHTML = '<video></video><div></div>';
         }
 
         function bind() {
-            that.videoControls.onPress('[data-action=play]', startVideo.bind(that));
-            that.videoControls.onPress('[data-action=pause]', pauseVideo.bind(that));
-            that.videoControls.onPress('[data-action=stop]', pauseVideo.bind(that));
+            videoControls.onPress('[data-action=play]', startVideo.bind(that));
+            videoControls.onPress('[data-action=pause]', pauseVideo.bind(that));
+            videoControls.onPress('[data-action=stop]', pauseVideo.bind(that));
         };
 
         function setVideo(videoFormats) {
@@ -71,12 +66,12 @@
         }
 
         function destroy() {
-            if (that.videoControls) {
-                that.videoControls.destroy();
+            if (videoControls) {
+                videoControls.destroy();
             }
-            if (that.element) {
-                that.element.innerHTML = '';
-                that.element = null;
+            if (element) {
+                element.innerHTML = '';
+                element.className = '';
             }
         };
     }
