@@ -1,12 +1,19 @@
 (function() {
     describe('Video Player Screen Controller', function() {
         var screen = null;
+        var screenElement = null;
         var videoTag = null;
 
         beforeEach(function() {
-            document.body.appendChild(document.createElement('div'));
-            screen = new VideoPlayerController.Screen(document.querySelector('div'));
-            videoTag = screen.element.querySelector('video');
+            spyOn(VideoPlayerController, 'VideoControls').and.returnValue({
+                destroy: function() {},
+                onPress: function() {}
+            });
+
+            screenElement = document.createElement('div');
+            document.body.appendChild(screenElement);
+            screen = new VideoPlayerController.Screen(screenElement);
+            videoTag = screenElement.querySelector('video');
 
             //mock Video API
             videoTag.load = function() {};

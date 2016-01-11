@@ -10,6 +10,4 @@
         type: 'video/ogg'
     }]);
 
-    player.screen.startVideo();
-
 })();

@@ -1,0 +1,48 @@
+.vplayer {
+    &-controls {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        &__bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 35px;
+            background-color: rgba(0,0,0,0.6);
+            -webkit-transition: opacity 500ms ease-in-out;
+            -moz-transition: opacity 500ms ease-in-out;
+            -ms-transition: opacity 500ms ease-in-out;
+            -o-transition: opacity 500ms ease-in-out;
+            transition: opacity 500ms ease-in-out;
+        }
+        &__button {
+            background-color: transparent;
+            border: 0;
+            color: white;
+            line-height: 35px;
+            font-size: 20px;
+            width: 35px;
+            padding: 0;
+            &:hover {
+                background-color: gray;
+            }
+        }
+        &__volume {
+            position: absolute;
+            right: 0;
+            bottom: 100%;
+            background-color: rgba(0,0,0,0.6);
+            width: 35px;
+            height: 200px;
+            color: white;
+            font-size: 40px;
+            line-height: 20px;
+            text-align: center;
+            padding: 5px 0;
+            cursor: pointer;
+        }
+    }
+}

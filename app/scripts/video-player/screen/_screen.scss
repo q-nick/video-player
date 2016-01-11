@@ -1,0 +1,10 @@
+.vplayer {
+    &-screen {
+        background-color: black;
+        position: relative;
+        overflow: hidden;
+        video {
+            width: 100%;
+        }
+    }
+}

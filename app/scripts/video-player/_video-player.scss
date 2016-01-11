@@ -1,0 +1,13 @@
+@import "video-controls/video-controls";
+@import "playlist/playlist";
+@import "screen/screen";
+//
+.vplayer {
+    background-color: gray;
+    padding-right: 200px;
+    height: 300px;
+    position: relative;
+    @media(max-width:768px) {
+        padding: 0;
+    }
+}

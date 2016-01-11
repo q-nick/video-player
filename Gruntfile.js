@@ -75,7 +75,7 @@ module.exports = function(grunt) {
                     port: 9001,
                     open: false,
                     logLevel: 'silent',
-                    host: 'localhost',
+                    host: '0.0.0.0',
                     server: {
                         baseDir: ['.tmp', './test', config.app],
                         routes: {
@@ -121,7 +121,7 @@ module.exports = function(grunt) {
         karma: {
             unit: {
                 options: {
-                    files: ['<%= config.app %>/scripts/video-player/**/*.js'],
+                    files: ['./node_modules/phantomjs-polyfill/bind-polyfill.js','<%= config.app %>/scripts/video-player/**/*.js', '<%= config.app %>/scripts/video-player/**/*.test.js'],
                     frameworks: ['jasmine']
                 },
                 port: 9999,
@@ -142,7 +142,7 @@ module.exports = function(grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= config.app %>/styles',
+                    cwd: '<%= config.app %>/styles/',
                     src: ['*.{scss,sass}'],
                     dest: '.tmp/styles',
                     ext: '.css'

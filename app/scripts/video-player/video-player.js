@@ -18,11 +18,11 @@
             that.element = document.querySelector(selector);
 
             //test if player is not already initialized on this node
-            if (that.element.className.indexOf('video-player') !== -1) {
+            if (that.element.className.indexOf('vplayer') !== -1) {
                 that.element = null;
                 return;
             } else {
-                that.element.className = that.element.className + ' video-player'
+                that.element.className = that.element.className + ' vplayer'
             }
 
             draw();
