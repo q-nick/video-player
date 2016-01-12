@@ -121,7 +121,7 @@ module.exports = function(grunt) {
         karma: {
             unit: {
                 options: {
-                    files: ['./node_modules/phantomjs-polyfill/bind-polyfill.js','<%= config.app %>/scripts/video-player/**/*.js', '<%= config.app %>/scripts/video-player/**/*.test.js'],
+                    files: ['./node_modules/phantomjs-polyfill/bind-polyfill.js','<%= config.app %>/scripts/video-player/*.js','<%= config.app %>/scripts/video-player/**/*.js', '<%= config.app %>/scripts/video-player/**/*.test.js'],
                     frameworks: ['jasmine']
                 },
                 port: 9999,

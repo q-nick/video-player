@@ -6,49 +6,26 @@
     window.VideoPlayerController.Playlist = function(element) {
         //public
         this.destroy = destroy;
-        this.onVideoSelected = function() {};
-        this.selectNext = function() {};
-        this.selectPrev = function() {};
+        this.selectNext = selectNext;
+        this.select = select;
+        //and Observable methods
 
         //private
         var that = this;
         var playlistControls = null; //it could be another object
         var name = 'My playlist';
+        var repeat = false;
         var list = [{
-            "url": "video01.mp4",
-            "name": "movie one",
+            "urls": ["video/clouds.mp4"],
+            "name": "Clouds",
             "duration": "2:34"
         }, {
-            "url": "video02.mp4",
-            "name": "movie one",
+            "urls": ["video/mov_bbb.mp4", "video/mov_bbb.ogg"],
+            "name": "Big Buck Bunny",
             "duration": "2:34"
         }, {
-            "url": "video03.mp4",
-            "name": "movie one",
-            "duration": "2:34"
-        }, {
-            "url": "video04.mp4",
-            "name": "movie one",
-            "duration": "2:34"
-        }, {
-            "url": "video04.mp4",
-            "name": "movie one",
-            "duration": "2:34"
-        }, {
-            "url": "video04.mp4",
-            "name": "movie one",
-            "duration": "2:34"
-        }, {
-            "url": "video04.mp4",
-            "name": "movie one",
-            "duration": "2:34"
-        }, {
-            "url": "video04.mp4",
-            "name": "movie one",
-            "duration": "2:34"
-        }, {
-            "url": "video04.mp4",
-            "name": "movie one",
+            "urls": ["video/rain.mp4"],
+            "name": "Rain",
             "duration": "2:34"
         }];
 
@@ -83,7 +60,18 @@
         }
 
         function onPress(e) {
-            console.log(e);
+            var selectedIndex = Array.prototype.indexOf.call(e.target.parentNode.childNodes, e.target);
+            var movieSelected = null;
+            for (var i = 0; i < list.length; i++) {
+                if (i === selectedIndex) {
+                    list[i].selected = true;
+                    movieSelected = list[i];
+                } else {
+                    list[i].selected = false;
+                }
+            }
+
+            this.notify('movie-selected', movieSelected);
         }
 
         function destroy() {
@@ -95,6 +83,42 @@
                 element.innerHTML = '';
                 element.className = '';
             }
-        };
+        }
+
+        function select(index) {
+            for (var i = 0; i < list.length; i++) {
+                if (i === index) {
+                    list[i].selected = true;
+                } else {
+                    list[i].selected = false;
+                }
+            }
+
+            this.notify('movie-selected', list[index]);
+        }
+
+        function selectNext() {
+            var movieSelected = null;
+            var currentSelectedIndex = null;
+
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].selected) {
+                    currentSelectedIndex = i;
+                    list[i].selected = false;
+                }
+            }
+
+            if (currentSelectedIndex !== null) {
+                if (currentSelectedIndex + 1 < list.length) {
+                    list[currentSelectedIndex + 1].selected = true;
+                    movieSelected = list[currentSelectedIndex + 1];
+                }
+            }
+
+            this.notify('movie-selected', movieSelected);
+        }
     }
+
+    window.VideoPlayerController.Playlist.prototype = new VideoPlayerUtils.Observable();
+
 })();

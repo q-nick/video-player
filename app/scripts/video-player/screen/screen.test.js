@@ -56,13 +56,9 @@
             it('should set video to play and reload video', function() {
                 expect(videoTag.querySelectorAll('source').length).toEqual(0);
 
-                screen.setVideo([{
-                    src: 'src.mp4',
-                    type: 'video/mp4'
-                }, {
-                    src: 'src.ogg',
-                    type: 'video/ogg'
-                }]);
+                screen.setVideo({
+                    urls: ['src.mp4', 'src.ogg']
+                });
 
                 expect(videoTag.querySelectorAll('source').length).toEqual(2);
                 expect(videoTag.load).toHaveBeenCalled();
@@ -76,6 +72,54 @@
             it('should Pause video', function() {
                 screen.pauseVideo();
                 expect(videoTag.pause).toHaveBeenCalled();
+            });
+        });
+
+        describe('states', function() {
+            it('should be STOPPED on init', function() {
+                expect(screen.getState()).toEqual('STOPPED');
+            });
+
+            it('should set state PLAYING and trigger state-changed event when movie is playing :)', function() {
+                var called = false;
+                screen.on('state-changed', function() {
+                    called = true;
+                });
+
+                var evt = document.createEvent('CustomEvent');
+                evt.initCustomEvent('playing', false, false, null);
+
+                expect(screen.getState()).not.toEqual('PLAYING');
+                videoTag.dispatchEvent(evt);
+                expect(screen.getState()).toEqual('PLAYING');
+                expect(called).toBeTruthy();
+            });
+
+            it('should set state PAUSED and trigger state-changed event when movie is paused', function() {
+                var called = false;
+                screen.on('state-changed', function() {
+                    called = true;
+                });
+
+                var evt = document.createEvent('CustomEvent');
+                evt.initCustomEvent('pause', false, false, null);
+
+                expect(screen.getState()).not.toEqual('PAUSED');
+                videoTag.dispatchEvent(evt);
+                expect(screen.getState()).toEqual('PAUSED');
+                expect(called).toBeTruthy();
+            });
+
+            it('should set state STOPPED and trigger state-changed event when movie is stopped (only by user)', function() {
+                var called = false;
+                screen.on('state-changed', function() {
+                    called = true;
+                });
+
+                //TODO onPress events
+                screenElement.querySelector('[data-action=stop]').click();
+                expect(screen.getState()).toEqual('STOPPED');
+                expect(called).toBeTruthy();
             });
         });
     });

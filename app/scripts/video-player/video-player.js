@@ -1,4 +1,4 @@
-(function(VideoPlayerController) {
+(function() {
     'use strict';
 
     window.VideoPlayer = function(selector) {
@@ -29,11 +29,29 @@
             var divs = that.element.querySelectorAll('div');
             that.screen = new VideoPlayerController.Screen(divs[0]);
             that.playlist = new VideoPlayerController.Playlist(divs[1]);
+
+            bind();
         }
 
         function draw() {
-            //TODO test not draw if exists
             that.element.innerHTML = '<div></div><div></div>';
+        }
+
+        function onPlaylistMovieSelected(movieSelected) {
+            that.screen.setVideo(movieSelected);
+        }
+
+        function onScreenStateChanged(state) {
+            if (state === 'ENDED') {
+                that.playlist.selectNext();
+            } else if (state === 'STOPPED') {
+                that.playlist.select(0);
+            }
+        }
+
+        function bind() {
+            that.playlist.on('movie-selected', onPlaylistMovieSelected);
+            that.screen.on('state-changed', onScreenStateChanged);
         }
 
         function destroy() {
@@ -51,4 +69,4 @@
             }
         }
     }
-})(VideoPlayerController);
+})();
