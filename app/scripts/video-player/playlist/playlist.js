@@ -61,6 +61,7 @@
 
         function onPress(e) {
             var selectedIndex = Array.prototype.indexOf.call(e.target.parentNode.childNodes, e.target);
+
             var movieSelected = null;
             for (var i = 0; i < list.length; i++) {
                 if (i === selectedIndex) {
@@ -70,7 +71,6 @@
                     list[i].selected = false;
                 }
             }
-
             this.notify('movie-selected', movieSelected);
         }
 
