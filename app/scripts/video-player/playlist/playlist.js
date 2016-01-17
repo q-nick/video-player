@@ -7,7 +7,9 @@
         //public
         this.destroy = destroy;
         this.selectNext = selectNext;
+        this.selectPrev = selectPrev;
         this.select = select;
+        this.setRepeat = setRepeat;
         //and Observable methods
 
         //private
@@ -15,6 +17,7 @@
         var playlistControls = null; //it could be another object
         var name = 'My playlist';
         var repeat = false;
+
         var list = [{
             "urls": ["video/clouds.mp4"],
             "name": "Clouds",
@@ -42,24 +45,37 @@
             }
 
             draw();
+            playlistControls = new VideoPlayerController.PlaylistControls(element.querySelector('div'));
+
             bind();
         }
 
         function draw() {
-            var html = '<ol class="vplayer-playlist-list">';
+            element.innerHTML = '<div></div><ol class="vplayer-playlist-list"></ol>';
+            reDrawListElements();
+        }
+
+        function reDrawListElements() {
+            var html = '';
             for (var i = 0; i < list.length; i++) {
                 var video = list[i];
                 html = html + '<li class="vplayer-playlist-list__item">' + video.name + ' ' + video.duration + '</li>';
             }
-            html = html + '</ol>';
-            element.innerHTML = html;
+            element.querySelector('ol').innerHTML = html;
         }
 
         function bind() {
             element.addEventListener('click', onPress.bind(that));
+
+            playlistControls.onPress('[data-action=prev]', selectPrev.bind(that));
+            playlistControls.onPress('[data-action=next]', selectNext.bind(that));
+            playlistControls.onPress('[data-action=repeat]', onRepeat.bind(that));
+            playlistControls.onPress('[data-action=shuffle]', onShuffle.bind(that));
         }
 
         function onPress(e) {
+            if (e.target.tagName.toUpperCase() !== 'LI') return;
+
             var selectedIndex = Array.prototype.indexOf.call(e.target.parentNode.childNodes, e.target);
 
             var movieSelected = null;
@@ -72,6 +88,34 @@
                 }
             }
             this.notify('movie-selected', movieSelected);
+        }
+
+        function onRepeat() {
+            repeat = !repeat;
+        }
+
+        function setRepeat(flag) {
+            repeat = flag;
+        }
+
+        function shuffle(array) {
+            var counter = array.length,
+                temp, index;
+
+            while (counter > 0) {
+                index = Math.floor(Math.random() * counter);
+                counter--;
+                temp = array[counter];
+                array[counter] = array[index];
+                array[index] = temp;
+            }
+
+            return array;
+        }
+
+        function onShuffle() {
+            list = shuffle(list);
+            reDrawListElements();
         }
 
         function destroy() {
@@ -112,6 +156,30 @@
                 if (currentSelectedIndex + 1 < list.length) {
                     list[currentSelectedIndex + 1].selected = true;
                     movieSelected = list[currentSelectedIndex + 1];
+                } else if (repeat) {
+                    list[0].selected = true;
+                    movieSelected = list[0];
+                }
+            }
+
+            this.notify('movie-selected', movieSelected);
+        }
+
+        function selectPrev() {
+            var movieSelected = null;
+            var currentSelectedIndex = null;
+
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].selected) {
+                    currentSelectedIndex = i;
+                    list[i].selected = false;
+                }
+            }
+
+            if (currentSelectedIndex !== null) {
+                if (currentSelectedIndex - 1 >= 0) {
+                    list[currentSelectedIndex - 1].selected = true;
+                    movieSelected = list[currentSelectedIndex - 1];
                 }
             }
 

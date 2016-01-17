@@ -1,0 +1,20 @@
+.vplayer {
+    &-controls-playlist {
+        &__bar {
+            height: 35px;
+            background-color: rgba(0,0,0,0.6);
+        }
+        &__button {
+            background-color: transparent;
+            border: 0;
+            color: white;
+            line-height: 35px;
+            font-size: 20px;
+            width: 35px;
+            padding: 0;
+            &:hover {
+                background-color: gray;
+            }
+        }
+    }
+}

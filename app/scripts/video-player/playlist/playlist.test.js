@@ -5,7 +5,17 @@
         var listTag = null;
         var lastSelectedMovie = null;
 
+        var callbacks = {};
+        var mockedPlaylistControls = {
+            destroy: function() {},
+            onPress: function(name, cb) {
+                callbacks[name] = cb;
+            }
+        };
+
         beforeEach(function() {
+            spyOn(VideoPlayerController, 'PlaylistControls').and.returnValue(mockedPlaylistControls);
+
             playlistElement = document.createElement('div');
             document.body.appendChild(playlistElement);
             playlist = new VideoPlayerController.Playlist(playlistElement);
@@ -60,6 +70,36 @@
                 listTag.childNodes[1].dispatchEvent(ev);
                 expect(lastSelectedMovie.name).toBe('Big Buck Bunny');
             });
+
+            it('should select next movie when onPress called', function() {
+                playlist.select(0);
+                callbacks['[data-action=next]']();
+                expect(lastSelectedMovie.name).toBe('Big Buck Bunny');
+            });
+
+            it('should select prev movie when onPress called', function() {
+                playlist.select(1);
+                callbacks['[data-action=prev]']();
+                expect(lastSelectedMovie.name).toBe('Clouds');
+            });
+
+            it('should change repeat flag when onPress called', function() {
+                playlist.setRepeat(false);
+
+                playlist.select(2);
+                callbacks['[data-action=repeat]']();
+                playlist.selectNext();
+                expect(lastSelectedMovie.name).toBe('Clouds');
+
+                playlist.select(2);
+                callbacks['[data-action=repeat]']();
+                playlist.selectNext();
+                expect(lastSelectedMovie).toBe(null);
+            });
+
+            it('should shuffle list when onPress called', function() {
+                //TODO
+            });
         });
 
         describe('methods', function() {
@@ -80,6 +120,27 @@
                 expect(lastSelectedMovie.name).toBe('Big Buck Bunny');
                 playlist.selectNext();
                 expect(lastSelectedMovie.name).toBe('Rain');
+            });
+
+            it('should select prev movie', function() {
+                playlist.select(1);
+                expect(lastSelectedMovie.name).toBe('Big Buck Bunny');
+                playlist.selectPrev();
+                expect(lastSelectedMovie.name).toBe('Clouds');
+                playlist.selectPrev();
+                expect(lastSelectedMovie).toBe(null);
+            });
+
+            it('should repeat movies', function() {
+                playlist.setRepeat(false);
+                playlist.select(2);
+                playlist.selectNext();
+                expect(lastSelectedMovie).toBe(null);
+
+                playlist.setRepeat(true);
+                playlist.select(2);
+                playlist.selectNext();
+                expect(lastSelectedMovie.name).toBe('Clouds');
             });
 
         });
