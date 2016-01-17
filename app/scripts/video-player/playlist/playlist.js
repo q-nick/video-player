@@ -64,7 +64,7 @@
             playlistControls.onPress('[data-action=next]', selectNext.bind(that));
             playlistControls.onPress('[data-action=repeat]', onRepeat.bind(that));
             playlistControls.onPress('[data-action=shuffle]', onShuffle.bind(that));
-            playlistControls.onPress('[data-action=xhr]', onXhr.bind(that));
+            playlistControls.onPress('[data-action=xhr]', onAddPlaylist.bind(that));
 
             that.on('movie-selected', reDrawListElements.bind(that));
         }
@@ -121,11 +121,14 @@
             select(0);
         }
 
-        function onXhr(url) {
-            if (!url) {
-                url = window.prompt('Please enter playlist url', '/playlist/one.json');
+        function onAddPlaylist() {
+            var url = window.prompt('Please enter playlist url', '/playlist/one.json');
+            if (url) {
+                onXhr(url);
             }
+        }
 
+        function onXhr(url) {
             if (window.$) {
                 window.$.ajax(url).done(setNewPlaylist.bind(that));
             }
