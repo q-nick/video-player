@@ -129,9 +129,7 @@
         }
 
         function onXhr(url) {
-            if (window.$) {
-                window.$.ajax(url).done(setNewPlaylist.bind(that));
-            }
+            VideoPlayerUtils.ajax(url).done(setNewPlaylist.bind(that));
         }
 
         function destroy() {
