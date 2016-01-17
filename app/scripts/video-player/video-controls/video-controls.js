@@ -3,18 +3,21 @@
 
     if (!window.VideoPlayerController) window.VideoPlayerController = {};
 
-    window.VideoPlayerController.VideoControls = function(element) {
+    window.VideoPlayerController.VideoControls = function(element, initVolume) {
         //public
         this.onPress = onPress;
         this.offPress = offPress;
         this.setCurentState = setCurrentState;
         this.destroy = destroy;
+        this.onVolumeChange = onVolumeChange;
+        this.updateVolume = updateVolume;
 
         //private
         var that = this;
         var currentState = 'STOPPED';
         var hideTimeoutId = null;
         var barElement = null;
+        var volumeBar = null;
 
         constructor();
 
@@ -40,10 +43,23 @@
                 '<button data-action="pause" class="vplayer-controls__button">ll</button>' +
                 '<button data-action="stop" class="vplayer-controls__button">&#9632;</button>' +
                 '<button data-action="fullscreen" class="vplayer-controls__button">&#10138;</button>' +
-                '<div data-action="volume" class="vplayer-controls__volume">&#9632;</div>' +
+                '<div data-action="volume" class="vplayer-controls__volume"></div>' +
                 '</div>';
 
             barElement = element.querySelector('.vplayer-controls__bar');
+            volumeBar = element.querySelector('[data-action="volume"]');
+            if (window.noUiSlider) {
+                window.noUiSlider.create(volumeBar, {
+                    start: initVolume,
+                    connect: 'upper',
+                    orientation: 'vertical',
+                    direction: 'rtl',
+                    range: {
+                        'min': 0,
+                        'max': 1
+                    }
+                });
+            }
         }
 
         function bind() {
@@ -74,6 +90,14 @@
         function offPress(selector, callback) {
             var el = element.querySelector(selector);
             el.removeEventListener('click', callback, false);
+        }
+
+        function onVolumeChange(cb) {
+            volumeBar.noUiSlider.on('update', cb);
+        }
+
+        function updateVolume(volume) {
+            console.log(volume);
         }
 
         function setCurrentState(state) {

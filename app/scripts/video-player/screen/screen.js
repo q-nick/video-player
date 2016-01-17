@@ -36,7 +36,7 @@
             setStateClass(state);
             draw();
             videoElement = element.querySelector('video');
-            videoControls = new VideoPlayerController.VideoControls(element.querySelector('div'));
+            videoControls = new VideoPlayerController.VideoControls(element.querySelector('div'), videoElement.volume);
 
             bind();
         }
@@ -50,12 +50,13 @@
             videoControls.onPress('[data-action=pause]', pauseVideo.bind(that));
             videoControls.onPress('[data-action=stop]', stopVideo.bind(that));
             videoControls.onPress('[data-action=fullscreen]', onFullscreen.bind(that));
+            videoControls.onVolumeChange(onVolumeChange.bind(that));
 
             videoElement.addEventListener('playing', onVideoStateChanged.bind(that));
             videoElement.addEventListener('pause', onVideoStateChanged.bind(that));
             videoElement.addEventListener('ended', onVideoStateChanged.bind(that));
             that.on('state-changed', setStateClass.bind(that));
-        };
+        }
 
         function onVideoStateChanged(e) {
             if (e.type === 'playing') {
@@ -81,6 +82,10 @@
 
         function getState() {
             return state;
+        }
+
+        function onVolumeChange(a, b, slides) {
+            videoElement.volume = slides;
         }
 
         function setVideo(movie) {

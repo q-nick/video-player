@@ -15,7 +15,8 @@
             destroy: function() {},
             onPress: function(name, cb) {
                 callbacks[name] = cb;
-            }
+            },
+            onVolumeChange: function() {}
         };
 
         beforeEach(function() {
