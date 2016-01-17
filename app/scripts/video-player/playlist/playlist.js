@@ -18,19 +18,7 @@
         var name = 'My playlist';
         var repeat = false;
 
-        var list = [{
-            "urls": ["video/clouds.mp4"],
-            "name": "Clouds",
-            "duration": "2:34"
-        }, {
-            "urls": ["video/mov_bbb.mp4", "video/mov_bbb.ogg"],
-            "name": "Big Buck Bunny",
-            "duration": "2:34"
-        }, {
-            "urls": ["video/rain.mp4"],
-            "name": "Rain",
-            "duration": "2:34"
-        }];
+        var list = [];
 
         constructor();
 
@@ -48,10 +36,11 @@
             playlistControls = new VideoPlayerController.PlaylistControls(element.querySelector('div'));
 
             bind();
+            onXhr('/playlist/one.json');
         }
 
         function draw() {
-            element.innerHTML = '<div></div><ol class="vplayer-playlist-list"></ol>';
+            element.innerHTML = '<div></div><p class="vplayer-playlist__title"></p><ol class="vplayer-playlist-list"></ol>';
             reDrawListElements();
         }
 
@@ -63,6 +52,7 @@
             }
 
             if (element.querySelector('ol')) {
+                element.querySelector('p').innerText = name;
                 element.querySelector('ol').innerHTML = html;
             }
         }
@@ -74,6 +64,7 @@
             playlistControls.onPress('[data-action=next]', selectNext.bind(that));
             playlistControls.onPress('[data-action=repeat]', onRepeat.bind(that));
             playlistControls.onPress('[data-action=shuffle]', onShuffle.bind(that));
+            playlistControls.onPress('[data-action=xhr]', onXhr.bind(that));
 
             that.on('movie-selected', reDrawListElements.bind(that));
         }
@@ -121,6 +112,23 @@
         function onShuffle() {
             list = shuffle(list);
             reDrawListElements();
+        }
+
+        function setNewPlaylist(playlist) {
+            name = playlist.name;
+            list = playlist.videos;
+            reDrawListElements();
+            select(0);
+        }
+
+        function onXhr(url) {
+            if (!url) {
+                url = window.prompt('Please enter playlist url', '/playlist/one.json');
+            }
+
+            if (window.$) {
+                window.$.ajax(url).done(setNewPlaylist.bind(that));
+            }
         }
 
         function destroy() {

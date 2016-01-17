@@ -12,6 +12,11 @@
             position: relative;
             width: 100%;
         }
+        &__title {
+            color: white;
+            padding-left: 10px;
+            font-weight: bold;
+        }
         &-list {
             list-style-position: inside;
             padding: 5px;

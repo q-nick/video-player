@@ -31,6 +31,7 @@
                 expect(playlistControlsElement.querySelectorAll('[data-action=next]').length).toEqual(1);
                 expect(playlistControlsElement.querySelectorAll('[data-action=shuffle]').length).toEqual(1);
                 expect(playlistControlsElement.querySelectorAll('[data-action=repeat]').length).toEqual(1);
+                expect(playlistControlsElement.querySelectorAll('[data-action=xhr]').length).toEqual(1);
             });
 
             it('should destroy everything', function() {

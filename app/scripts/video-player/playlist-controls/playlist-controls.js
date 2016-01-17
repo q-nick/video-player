@@ -35,6 +35,7 @@
                 '<button data-action="prev" class="vplayer-controls-playlist__button">&laquo;</button>' +
                 '<button data-action="shuffle" class="vplayer-controls-playlist__button">&#8605;</button>' +
                 '<button data-action="repeat" class="vplayer-controls-playlist__button">&#8634;</button>' +
+                '<button data-action="xhr" class="vplayer-controls-playlist__button">+</button>' +
                 '<button data-action="next" class="vplayer-controls-playlist__button">&raquo;</button>' +
                 '</div>';
 

@@ -1,16 +1,16 @@
 {
-    "name": "My playlist",
+    "name": "Another playlist",
     "videos": [{
+        "urls": ["video/rain.mp4"],
+        "name": "Rain",
+        "duration": "2:34"
+    }, {
         "urls": ["video/clouds.mp4"],
         "name": "Clouds",
         "duration": "2:34"
     }, {
         "urls": ["video/mov_bbb.mp4", "video/mov_bbb.ogg"],
         "name": "Big Buck Bunny",
-        "duration": "2:34"
-    }, {
-        "urls": ["video/rain.mp4"],
-        "name": "Rain",
         "duration": "2:34"
     }]
 }

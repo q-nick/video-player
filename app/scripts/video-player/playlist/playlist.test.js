@@ -13,8 +13,34 @@
             }
         };
 
+        var jQueryAjaxMock = {
+            ajax: function() {
+                return {
+                    done: function(cb) {
+                        cb({
+                            "name": "My playlist",
+                            "videos": [{
+                                "urls": ["video/clouds.mp4"],
+                                "name": "Clouds",
+                                "duration": "2:34"
+                            }, {
+                                "urls": ["video/mov_bbb.mp4", "video/mov_bbb.ogg"],
+                                "name": "Big Buck Bunny",
+                                "duration": "2:34"
+                            }, {
+                                "urls": ["video/rain.mp4"],
+                                "name": "Rain",
+                                "duration": "2:34"
+                            }]
+                        });
+                    }
+                }
+            }
+        };
+
         beforeEach(function() {
             spyOn(VideoPlayerController, 'PlaylistControls').and.returnValue(mockedPlaylistControls);
+            window.$ = jQueryAjaxMock;
 
             playlistElement = document.createElement('div');
             document.body.appendChild(playlistElement);
@@ -66,7 +92,6 @@
                     0, null
                 );
 
-                expect(lastSelectedMovie).toBeFalsy();
                 listTag.childNodes[1].dispatchEvent(ev);
                 expect(lastSelectedMovie.name).toBe('Big Buck Bunny');
             });
@@ -99,6 +124,17 @@
 
             it('should shuffle list when onPress called', function() {
                 //TODO
+            });
+
+            it('should open prompt to load xhr json playlist', function() {
+                spyOn(window, 'prompt');
+                spyOn(jQueryAjaxMock, 'ajax').and.callThrough();;
+
+                expect(window.prompt).not.toHaveBeenCalled();
+                expect(jQueryAjaxMock.ajax).not.toHaveBeenCalled();
+                callbacks['[data-action=xhr]']();
+                expect(window.prompt).toHaveBeenCalled();
+                expect(jQueryAjaxMock.ajax).toHaveBeenCalled();
             });
         });
 
