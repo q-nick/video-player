@@ -65,14 +65,14 @@
             } else if (e.type === 'ended') {
                 state = 'ENDED';
             }
-            this.notify('state-changed', state);
+            that.notify('state-changed', state);
         }
 
         function stopVideo() {
             pauseVideo();
             videoElement.innerHTML = '';
             state = 'STOPPED';
-            this.notify('state-changed', state);
+            that.notify('state-changed', state);
         }
 
         function setStateClass(state) {
@@ -105,7 +105,11 @@
 
         function startVideo() {
             forceToPlay = true;
-            videoElement.play();
+            if (videoElement.childNodes.length !== 0) {
+                videoElement.play();
+            } else {
+                that.notify('no-movie')
+            }
         }
 
         function pauseVideo() {

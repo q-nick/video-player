@@ -59,9 +59,12 @@
             var html = '';
             for (var i = 0; i < list.length; i++) {
                 var video = list[i];
-                html = html + '<li class="vplayer-playlist-list__item">' + video.name + ' ' + video.duration + '</li>';
+                html = html + '<li class="vplayer-playlist-list__item' + (video.selected ? ' vplayer-playlist-list__item--active' : '') + '">' + video.name + ' ' + video.duration + '</li>';
             }
-            element.querySelector('ol').innerHTML = html;
+
+            if (element.querySelector('ol')) {
+                element.querySelector('ol').innerHTML = html;
+            }
         }
 
         function bind() {
@@ -71,6 +74,8 @@
             playlistControls.onPress('[data-action=next]', selectNext.bind(that));
             playlistControls.onPress('[data-action=repeat]', onRepeat.bind(that));
             playlistControls.onPress('[data-action=shuffle]', onShuffle.bind(that));
+
+            that.on('movie-selected', reDrawListElements.bind(that));
         }
 
         function onPress(e) {
@@ -87,7 +92,7 @@
                     list[i].selected = false;
                 }
             }
-            this.notify('movie-selected', movieSelected);
+            that.notify('movie-selected', movieSelected);
         }
 
         function onRepeat() {
@@ -138,7 +143,7 @@
                 }
             }
 
-            this.notify('movie-selected', list[index]);
+            that.notify('movie-selected', list[index]);
         }
 
         function selectNext() {
@@ -162,7 +167,7 @@
                 }
             }
 
-            this.notify('movie-selected', movieSelected);
+            that.notify('movie-selected', movieSelected);
         }
 
         function selectPrev() {
@@ -183,7 +188,7 @@
                 }
             }
 
-            this.notify('movie-selected', movieSelected);
+            that.notify('movie-selected', movieSelected);
         }
     }
 

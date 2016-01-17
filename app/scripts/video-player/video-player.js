@@ -53,9 +53,14 @@
             }
         }
 
+        function onScreenNoMovie() {
+            playlist.select(0);
+        }
+
         function bind() {
             playlist.on('movie-selected', onPlaylistMovieSelected);
             screen.on('state-changed', onScreenStateChanged);
+            screen.on('no-movie', onScreenNoMovie);
         }
 
         function destroy() {

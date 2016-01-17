@@ -1,22 +1,22 @@
 (function() {
     describe('Video Player Object', function() {
         var player = null;
-        var playlistOnCallback = null;
-        var screenOnCallback = null;
+        var playlistOnCallback = {};
+        var screenOnCallback = {};
         var playerElement = null;
 
         var mockScreen = {
             destroy: function() {},
             setVideo: function() {},
             on: function(type, cb) {
-                screenOnCallback = cb;
+                screenOnCallback[type] = cb;
             }
         }
 
         var mockPlaylist = {
             destroy: function() {},
             on: function(type, cb) {
-                playlistOnCallback = cb;
+                playlistOnCallback[type] = cb;
             },
             selectNext: function() {},
             select: function() {}
@@ -83,7 +83,7 @@
             it('should set new Video when movie-selected event is triggered', function() {
                 spyOn(mockScreen, 'setVideo');
                 expect(mockScreen.setVideo).not.toHaveBeenCalled();
-                playlistOnCallback('anyparam');
+                playlistOnCallback['movie-selected']('anyparam');
                 expect(mockScreen.setVideo).toHaveBeenCalledWith('anyparam');
             });
         });
@@ -92,13 +92,19 @@
             it('should ask playlist to select next movie when screen change state to ENDED', function() {
                 spyOn(mockPlaylist, 'selectNext');
                 expect(mockPlaylist.selectNext).not.toHaveBeenCalled();
-                screenOnCallback('ENDED');
+                screenOnCallback['state-changed']('ENDED');
                 expect(mockPlaylist.selectNext).toHaveBeenCalledWith();
+            });
+            it('should ask playlist to select first movie when screen has no movie', function() {
+                spyOn(mockPlaylist, 'select');
+                expect(mockPlaylist.select).not.toHaveBeenCalled();
+                screenOnCallback['no-movie']();
+                expect(mockPlaylist.select).toHaveBeenCalledWith(0);
             });
             it('should select first movie on playlist when screen change state to STOPPED', function() {
                 spyOn(mockPlaylist, 'select');
                 expect(mockPlaylist.select).not.toHaveBeenCalled();
-                screenOnCallback('STOPPED');
+                screenOnCallback['state-changed']('STOPPED');
                 expect(mockPlaylist.select).toHaveBeenCalledWith(0);
             });
         });

@@ -23,6 +23,7 @@
             }
 
             this.notify = function(type, message) {
+                if (!observers[type]) return;
                 for (var i = observers[type].length - 1; i >= 0; i--) {
                     observers[type][i](message);
                 };

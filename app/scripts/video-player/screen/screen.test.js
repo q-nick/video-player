@@ -78,6 +78,9 @@
             });
 
             it('should Start video', function() {
+                screen.setVideo({
+                    urls: ['src.mp4', 'src.ogg']
+                });
                 screen.startVideo();
                 expect(videoTag.play).toHaveBeenCalled();
             });

@@ -1,5 +1,5 @@
 (function() {
-    describe('Video Player Screen Controller', function() {
+    describe('Video Player Playlist Controller', function() {
         var playlist = null;
         var playlistElement = null;
         var listTag = null;
