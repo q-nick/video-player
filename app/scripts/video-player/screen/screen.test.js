@@ -87,6 +87,11 @@
                 expect(videoTag.pause).toHaveBeenCalled();
             });
 
+            it('should Stop video', function() {
+                screen.stopVideo();
+                expect(videoTag.pause).toHaveBeenCalled();
+            });
+
         });
 
         describe('fullscreen', function() {

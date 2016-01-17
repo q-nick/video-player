@@ -9,6 +9,7 @@
         this.setVideo = setVideo;
         this.startVideo = startVideo;
         this.pauseVideo = pauseVideo;
+        this.stopVideo = stopVideo;
         this.getState = getState;
         //and Observable methods
 
@@ -47,7 +48,7 @@
         function bind() {
             videoControls.onPress('[data-action=play]', startVideo.bind(that));
             videoControls.onPress('[data-action=pause]', pauseVideo.bind(that));
-            videoControls.onPress('[data-action=stop]', onStop.bind(that));
+            videoControls.onPress('[data-action=stop]', stopVideo.bind(that));
             videoControls.onPress('[data-action=fullscreen]', onFullscreen.bind(that));
 
             videoElement.addEventListener('playing', onVideoStateChanged.bind(that));
@@ -67,7 +68,7 @@
             this.notify('state-changed', state);
         }
 
-        function onStop() {
+        function stopVideo() {
             pauseVideo();
             videoElement.innerHTML = '';
             state = 'STOPPED';

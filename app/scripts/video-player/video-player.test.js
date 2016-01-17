@@ -3,6 +3,7 @@
         var player = null;
         var playlistOnCallback = null;
         var screenOnCallback = null;
+        var playerElement = null;
 
         var mockScreen = {
             destroy: function() {},
@@ -25,7 +26,10 @@
             spyOn(VideoPlayerController, 'Screen').and.returnValue(mockScreen);
             spyOn(VideoPlayerController, 'Playlist').and.returnValue(mockPlaylist);
 
-            document.body.appendChild(document.createElement('div'));
+
+            playerElement = document.createElement('div');
+            document.body.appendChild(playerElement);
+
             player = new VideoPlayer('div');
         });
 
@@ -42,30 +46,36 @@
 
             it('should not create new instance of player if it exists on given node', function() {
                 var secondPlayer = new VideoPlayer('div');
-                expect(secondPlayer.element).toEqual(null);
+                expect(playerElement.innerHTML).not.toEqual('');
+                secondPlayer.destroy();
+                expect(playerElement.innerHTML).not.toEqual('');
             });
 
             it('should add dom nodes for playlist and screen', function() {
-                expect(player.element.children.length).toBe(2);
+                expect(playerElement.children.length).toBe(2);
             });
 
             it('should destroy everything', function() {
+                spyOn(mockScreen, 'destroy').and.returnValue(mockScreen);
+                spyOn(mockPlaylist, 'destroy').and.returnValue(mockPlaylist);
+
+                expect(mockScreen.destroy).not.toHaveBeenCalled();
+                expect(mockPlaylist.destroy).not.toHaveBeenCalled();
                 player.destroy();
-                expect(player.element).toEqual(null);
-                expect(player.screen).toEqual(null);
-                expect(player.playlist).toEqual(null);
+                expect(playerElement.innerHTML).toEqual('');
+                expect(playerElement.className).toEqual('');
+                expect(mockScreen.destroy).toHaveBeenCalled();
+                expect(mockPlaylist.destroy).toHaveBeenCalled();
             });
         });
 
         describe('controllers', function() {
             it('should contain Screen Instance', function() {
                 expect(VideoPlayerController.Screen).toHaveBeenCalled();
-                expect(player.screen).toBeDefined();
             });
 
             it('should contain PlayList Instance', function() {
                 expect(VideoPlayerController.Playlist).toHaveBeenCalled();
-                expect(player.playlist).toBeDefined();
             });
         });
 
@@ -90,6 +100,15 @@
                 expect(mockPlaylist.select).not.toHaveBeenCalled();
                 screenOnCallback('STOPPED');
                 expect(mockPlaylist.select).toHaveBeenCalledWith(0);
+            });
+        });
+
+        describe('API Methods', function() {
+            it('should contain API method', function() {
+                expect(player.play).toBeDefined();
+                expect(player.pause).toBeDefined();
+                expect(player.stop).toBeDefined();
+                expect(player.onStateChanged).toBeDefined();
             });
         });
     });
