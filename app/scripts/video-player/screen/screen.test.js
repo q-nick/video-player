@@ -126,6 +126,15 @@
                 expect(screen.getState()).toEqual('STOPPED');
             });
 
+            it('should set className on state-change', function() {
+                expect(screenElement.className).toContain('STOPPED');
+                var evt = document.createEvent('CustomEvent');
+                evt.initCustomEvent('playing', false, false, null);
+                videoTag.dispatchEvent(evt);
+                expect(screenElement.className).not.toContain('STOPPED');
+                expect(screenElement.className).toContain('PLAYING');
+            });
+
             it('should set state PLAYING and trigger state-changed event when movie is playing :)', function() {
                 var called = false;
                 screen.on('state-changed', function() {
@@ -162,10 +171,9 @@
                     called = true;
                 });
 
-                //TODO onPress events
-                //screenElement.querySelector('[data-action=stop]').click();
+                callbacks['[data-action=stop]']();
                 expect(screen.getState()).toEqual('STOPPED');
-                //expect(called).toBeTruthy();
+                expect(called).toBeTruthy();
             });
         });
     });

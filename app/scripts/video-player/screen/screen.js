@@ -29,9 +29,10 @@
                 element = null;
                 return;
             } else {
-                element.className = element.className + ' vplayer-screen'
+                element.className = element.className + ' vplayer-screen';
             }
 
+            setStateClass(state);
             draw();
             videoElement = element.querySelector('video');
             videoControls = new VideoPlayerController.VideoControls(element.querySelector('div'));
@@ -40,7 +41,7 @@
         }
 
         function draw() {
-            element.innerHTML = '<video></video><div></div>';
+            element.innerHTML = '<video></video><img src="/images/placeholder.jpg"/><div></div>';
         }
 
         function bind() {
@@ -52,6 +53,7 @@
             videoElement.addEventListener('playing', onVideoStateChanged.bind(that));
             videoElement.addEventListener('pause', onVideoStateChanged.bind(that));
             videoElement.addEventListener('ended', onVideoStateChanged.bind(that));
+            that.on('state-changed', setStateClass.bind(that));
         };
 
         function onVideoStateChanged(e) {
@@ -67,8 +69,13 @@
 
         function onStop() {
             pauseVideo();
+            videoElement.innerHTML = '';
             state = 'STOPPED';
             this.notify('state-changed', state);
+        }
+
+        function setStateClass(state) {
+            element.className = 'vplayer-screen vplayer-screen--' + state;
         }
 
         function getState() {

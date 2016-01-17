@@ -35,7 +35,7 @@
 
         function draw() {
             element.innerHTML =
-                '<div class="vplayer-controls__bar vplayer-controls__bar--' + currentState + '">' +
+                '<div class="vplayer-controls__bar">' +
                 '<button data-action="play" class="vplayer-controls__button">&#10148;</button>' +
                 '<button data-action="pause" class="vplayer-controls__button">ll</button>' +
                 '<button data-action="stop" class="vplayer-controls__button">&#9632;</button>' +
