@@ -8,6 +8,7 @@
         this.onPress = onPress;
         this.offPress = offPress;
         this.destroy = destroy;
+        this.setRepeat = setRepeat;
 
         //private
         var that = this;
@@ -58,6 +59,14 @@
             if (element) {
                 element.innerHTML = '';
                 element.className = '';
+            }
+        }
+
+        function setRepeat(state) {
+            if (state) {
+                element.querySelector('[data-action=repeat]').className = 'vplayer-controls-playlist__button vplayer-controls-playlist__button--active';
+            } else {
+                element.querySelector('[data-action=repeat]').className = 'vplayer-controls-playlist__button';
             }
         }
     }

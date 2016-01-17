@@ -10,7 +10,8 @@
             destroy: function() {},
             onPress: function(name, cb) {
                 callbacks[name] = cb;
-            }
+            },
+            setRepeat: function() {}
         };
 
         window.AjaxMock = function() {

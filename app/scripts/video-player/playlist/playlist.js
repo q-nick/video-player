@@ -87,11 +87,12 @@
         }
 
         function onRepeat() {
-            repeat = !repeat;
+            setRepeat(!repeat);
         }
 
         function setRepeat(flag) {
             repeat = flag;
+            playlistControls.setRepeat(repeat);
         }
 
         function shuffle(array) {

@@ -4,7 +4,7 @@
     window.VideoPlayerUtils = {
         any: function() {},
         ajax: function() {
-            return window.$.ajax(arguments);
+            return $.ajax.apply(this, arguments);
         },
         Observable: function() {
             //TODO tests
