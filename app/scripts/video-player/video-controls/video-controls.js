@@ -39,6 +39,7 @@
                 '<button data-action="play" class="vplayer-controls__button">&#10148;</button>' +
                 '<button data-action="pause" class="vplayer-controls__button">ll</button>' +
                 '<button data-action="stop" class="vplayer-controls__button">&#9632;</button>' +
+                '<button data-action="fullscreen" class="vplayer-controls__button">&#10138;</button>' +
                 '<div data-action="volume" class="vplayer-controls__volume">&#9632;</div>' +
                 '</div>';
 

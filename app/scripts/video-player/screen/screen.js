@@ -18,6 +18,7 @@
         var videoElement = null;
         var videoControls = null; //it could be another object
         var forceToPlay = false;
+        var fullscreen = new VideoPlayerUtils.FullScreen();
 
         constructor();
 
@@ -46,6 +47,7 @@
             videoControls.onPress('[data-action=play]', startVideo.bind(that));
             videoControls.onPress('[data-action=pause]', pauseVideo.bind(that));
             videoControls.onPress('[data-action=stop]', onStop.bind(that));
+            videoControls.onPress('[data-action=fullscreen]', onFullscreen.bind(that));
 
             videoElement.addEventListener('playing', onVideoStateChanged.bind(that));
             videoElement.addEventListener('pause', onVideoStateChanged.bind(that));
@@ -101,6 +103,16 @@
         function pauseVideo() {
             forceToPlay = false;
             videoElement.pause();
+        }
+
+        function onFullscreen() {
+            if (fullscreen.isFullScreenAvailable()) {
+                if (fullscreen.isFullScreen()) {
+                    fullscreen.exitFullScreen();
+                } else {
+                    fullscreen.goFullScreen(element);
+                }
+            }
         }
 
         function destroy() {

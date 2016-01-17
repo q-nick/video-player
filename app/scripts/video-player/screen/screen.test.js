@@ -4,14 +4,27 @@
         var screenElement = null;
         var videoTag = null;
 
+        var callbacks = {};
+        var mockedFullScreen = {
+            isFullScreenAvailable: function() {},
+            isFullScreen: function() {},
+            exitFullScreen: function() {},
+            goFullScreen: function() {}
+        };
+        var mockedVideoControls = {
+            destroy: function() {},
+            onPress: function(name, cb) {
+                callbacks[name] = cb;
+            }
+        };
+
         beforeEach(function() {
-            spyOn(VideoPlayerController, 'VideoControls').and.returnValue({
-                destroy: function() {},
-                onPress: function() {}
-            });
+            spyOn(VideoPlayerController, 'VideoControls').and.returnValue(mockedVideoControls);
+            spyOn(VideoPlayerUtils, 'FullScreen').and.returnValue(mockedFullScreen);
 
             screenElement = document.createElement('div');
             document.body.appendChild(screenElement);
+            callbacks = {};
             screen = new VideoPlayerController.Screen(screenElement);
             videoTag = screenElement.querySelector('video');
 
@@ -72,6 +85,39 @@
             it('should Pause video', function() {
                 screen.pauseVideo();
                 expect(videoTag.pause).toHaveBeenCalled();
+            });
+
+        });
+
+        describe('fullscreen', function() {
+            it('should goFullScreen when api available and is not fullscreen', function() {
+                spyOn(mockedFullScreen, 'isFullScreenAvailable').and.returnValue(true);
+                spyOn(mockedFullScreen, 'isFullScreen').and.returnValue(false);
+                spyOn(mockedFullScreen, 'goFullScreen');
+                ///
+                expect(mockedFullScreen.goFullScreen).not.toHaveBeenCalled();
+                callbacks['[data-action=fullscreen]']();
+                expect(mockedFullScreen.goFullScreen).toHaveBeenCalled();
+            });
+
+            it('should exit FullScreen when api available and is fullscreen', function() {
+                spyOn(mockedFullScreen, 'isFullScreenAvailable').and.returnValue(true);
+                spyOn(mockedFullScreen, 'isFullScreen').and.returnValue(true);
+                spyOn(mockedFullScreen, 'exitFullScreen');
+                ///
+                expect(mockedFullScreen.exitFullScreen).not.toHaveBeenCalled();
+                callbacks['[data-action=fullscreen]']();
+                expect(mockedFullScreen.exitFullScreen).toHaveBeenCalled();
+            });
+
+            it('should not go FullScreen when api not available and is not fullscreen', function() {
+                spyOn(mockedFullScreen, 'isFullScreenAvailable').and.returnValue(false);
+                spyOn(mockedFullScreen, 'isFullScreen').and.returnValue(true);
+                spyOn(mockedFullScreen, 'goFullScreen');
+                ///
+                expect(mockedFullScreen.goFullScreen).not.toHaveBeenCalled();
+                callbacks['[data-action=fullscreen]']();
+                expect(mockedFullScreen.goFullScreen).not.toHaveBeenCalled();
             });
         });
 
